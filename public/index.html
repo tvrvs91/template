@@ -1,37 +1,208 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
-    <meta
-      name="description"
-      content="Web site created using create-react-app"
-    />
-    <!--
-      Notice the use of %PUBLIC_URL% in the tags above.
-      It will be replaced with the URL of the `public` folder during the build.
-      Only files inside the `public` folder can be referenced from the HTML.
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Last.fm — Музыкальный Архив</title>
+  <link rel="stylesheet" href="/src/index.css">
+</head>
+<body>
 
-      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
-      work correctly both with client-side routing and a non-root public URL.
-      Learn how to configure a non-root public URL by running `npm run build`.
-    -->
-    <title>React App</title>
-  </head>
-  <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
+  <!-- Header -->
+  <header class="header-container">
+    <div class="logo">
+      <span class="logo-text">Archhhiv</span>
+    </div>
+    <div class="search-container">
+      <form class="search-wrapper" action="/search" method="get">
+        <input type="text" class="search-row" placeholder="Поиск исполнителей, треков или альбомов..." name="q">
+        <button type="submit" class="search-button">Найти</button>
+      </form>
+    </div>
+    <nav class="header-nav">
+      <a href="#" class="nav-link">Чарты</a>
+      <a href="#" class="nav-link">События</a>
+      <a href="#" class="nav-link">Форум</a>
+    </nav>
+  </header>
 
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- Title Section -->
+    <section class="title-section">
+      <h1 class="title-container">Чарты недели</h1>
+      <div class="title-underline"></div>
+    </section>
 
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    -->
-  </body>
+    <!-- Charts -->
+    <section class="chart-container">
+      <div class="chart-item">
+        <div class="chart-item-cover" style="background-image: url(https://lastfm.freetls.fastly.net/i/u/174s/b34f47781c46a1080f6ee32f6ffde7d8.png)">
+          <div class="chart-item-position">1</div>
+        </div>
+        <div class="chart-item-description">
+          <div class="chart-item-trackname">luther(with SZA)</div>
+          <a href="https://www.last.fm/music/Kendrick+Lamar" class="chart-item-link" target="_blank">
+            <div class="chart-item-artistname">Kendrick Lamar</div>
+          </a>
+          <div class="chart-item-tags">
+            <span class="chart-item-tag">hip hop</span>
+            <span class="chart-item-tag">rap</span>
+          </div>
+          <div class="chart-item-listeners">3,456,789 слушателей</div>
+        </div>
+      </div>
+      
+      <div class="chart-item">
+        <div class="chart-item-cover" style="background-image: url(https://lastfm.freetls.fastly.net/i/u/300x300/f2bd30934043834988881bcd99632342.jpg)">
+          <div class="chart-item-position">2</div>
+        </div>
+        <div class="chart-item-description">
+          <div class="chart-item-trackname">EVIL J0RDAN</div>
+          <a href="https://www.last.fm/music/Playboi+Carti" class="chart-item-link" target="_blank">
+            <div class="chart-item-artistname">Playboi Carti</div>
+          </a>
+          <div class="chart-item-tags">
+            <span class="chart-item-tag">gangsta rap</span>
+            <span class="chart-item-tag">trap</span>
+          </div>
+          <div class="chart-item-listeners">987,543 слушателей</div>
+        </div>
+      </div>
+      
+      <div class="chart-item">
+        <div class="chart-item-cover" style="background-image: url(https://lastfm.freetls.fastly.net/i/u/300x300/fadd0582a9a702951a85e3505df81f81.jpg)">
+          <div class="chart-item-position">3</div>
+        </div>
+        <div class="chart-item-description">
+          <div class="chart-item-trackname">Mona Lisa</div>
+          <a href="https://www.last.fm/music/j-hope" class="chart-item-link" target="_blank">
+            <div class="chart-item-artistname">j-hope</div>
+          </a>
+          <div class="chart-item-tags">
+            <span class="chart-item-tag">k-pop</span>
+            <span class="chart-item-tag">hip hop</span>
+          </div>
+          <div class="chart-item-listeners">876,432 слушателей</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Separator -->
+    <hr class="block-separator">
+
+    <!-- Featured Artist -->
+    <section class="featured-artist-section">
+      <h2 class="section-title">Исполнитель недели</h2>
+      <div class="artist-card" style="background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.8)), url(https://i.pinimg.com/736x/dc/b7/0c/dcb70cc5943196fa8ec3396d02aa2bc7.jpg)">
+        <div class="artist-card-info">
+          <h3 class="artist-card-name">Kendrick Lamar</h3>
+          <div class="artist-card-tags">
+            <span class="artist-card-tag">hip hop</span>
+            <span class="artist-card-tag">rap</span>
+            <span class="artist-card-tag">conscious rap</span>
+          </div>
+          <div class="artist-card-bio">Американский рэпер, автор песен и музыкальный продюсер. Лауреат Пулитцеровской премии, считается одним из самых влиятельных современных хип-хоп исполнителей.</div>
+          <div class="artist-card-stats">
+            <span class="stat-item">12,345,678 слушателей</span>
+            <span class="stat-item">5,678,901 скробблов</span>
+          </div>
+          
+          <div class="artist-card-related">
+            <h4 class="related-title">Похожие исполнители</h4>
+            <div class="artist-card-related-container">
+              <div class="artist-card-related-cover" style="background-image: url(https://i.pinimg.com/736x/85/bd/08/85bd088c1c19874df9fa4c511f697b3c.jpg)"></div>
+              <div class="artist-card-related-description">
+                <div class="artist-card-related-name">J. Cole</div>
+                <div class="artist-card-related-bottom">hip hop • rap</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Separator -->
+    <hr class="block-separator">
+
+    <!-- Popular Artists -->
+    <section class="popular-artists-section">
+      <h2 class="section-title">Популярные исполнители</h2>
+      <div class="artists-chart-container">
+        <div class="artist-chart-item">
+          <div class="artist-chart-image" style="background-image: url(https://i.pinimg.com/736x/19/5e/69/195e69c3622809131f1eab350c321d10.jpg)"></div>
+          <h3 class="artist-chart-name">Lana Del Rey</h3>
+          <div class="artist-chart-tags">
+            <span class="artist-chart-tag">dream pop</span>
+            <span class="artist-chart-tag">alternative</span>
+          </div>
+          <div class="artist-chart-listeners">8,765,432 слушателей</div>
+        </div>
+        
+        <div class="artist-chart-item">
+          <div class="artist-chart-image" style="background-image: url(https://i.pinimg.com/736x/d4/4d/fa/d44dfa20cf06df56c8ebd65e492aa888.jpg)"></div>
+          <h3 class="artist-chart-name">Tyler, The Creator</h3>
+          <div class="artist-chart-tags">
+            <span class="artist-chart-tag">hip hop</span>
+            <span class="artist-chart-tag">alternative rap</span>
+          </div>
+          <div class="artist-chart-listeners">7,654,321 слушателей</div>
+        </div>
+        
+        <div class="artist-chart-item">
+          <div class="artist-chart-image" style="background-image: url(https://i.pinimg.com/736x/4c/74/19/4c741913cd43b2c92939e5637fd5e0cb.jpg)"></div>
+          <h3 class="artist-chart-name">Drake</h3>
+          <div class="artist-chart-tags">
+            <span class="artist-chart-tag">hip hop</span>
+            <span class="artist-chart-tag">rap</span>
+          </div>
+          <div class="artist-chart-listeners">15,678,901 слушателей</div>
+        </div>
+        
+        <div class="artist-chart-item">
+          <div class="artist-chart-image" style="background-image: url(https://i.pinimg.com/736x/f2/7c/65/f27c658c2c6fe02f4b89eea80fb54f80.jpg)"></div>
+          <h3 class="artist-chart-name">Radiohead</h3>
+          <div class="artist-chart-tags">
+            <span class="artist-chart-tag">alternative</span>
+            <span class="artist-chart-tag">rock</span>
+          </div>
+          <div class="artist-chart-listeners">9,876,543 слушателей</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer-container">
+    <div class="footer-links">
+      <div class="footer-column">
+        <h4 class="footer-title">Last.fm</h4>
+        <a href="#" class="footer-link">О нас</a>
+        <a href="#" class="footer-link">Вакансии</a>
+        <a href="#" class="footer-link">Блог</a>
+      </div>
+      <div class="footer-column">
+        <h4 class="footer-title">Помощь</h4>
+        <a href="#" class="footer-link">Поддержка</a>
+        <a href="#" class="footer-link">Форум</a>
+        <a href="#" class="footer-link">Правила</a>
+      </div>
+      <div class="footer-column">
+        <h4 class="footer-title">Соцсети</h4>
+        <a href="#" class="footer-link">Twitter</a>
+        <a href="#" class="footer-link">Facebook</a>
+        <a href="#" class="footer-link">Instagram</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="copyright">© 2025 Last.fm Ltd. Все права защищены.</p>
+      <div class="legal-links">
+        <a href="#" class="legal-link">Условия использования</a>
+        <a href="#" class="legal-link">Политика конфиденциальности</a>
+        <a href="#" class="legal-link">Cookies</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
 </html>
