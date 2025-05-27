@@ -4,47 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Archhhiv - Music Discovery</title>
-  <link rel="stylesheet" href="/src/index.css">
+  <!-- Удалите ссылку на CSS - они теперь импортируются через JS -->
 </head>
 <body>
-  <div class="app-container">
-    <header class="header">
-  <div class="header-logo">Archhhiv</div>
-  <form class="search-form" id="searchForm">
-    <input type="text" class="search-input" placeholder="Search for artists, albums, or tracks" id="searchInput" aria-label="Search">
-    <button type="submit" class="search-button">Search</button>
-    
-  </form>
-</header>
-
-    <main class="main-content">
-      <section class="section genres-section">
-        <h2 class="section-title">Browse Genres</h2>
-        <div class="genres-grid" id="genresGrid"></div>  
-      </section>
-
-      <section class="section releases-section">
-        <h2 class="section-title">The Latest Releases</h2>
-        <div class="releases-grid" id="latestReleases"></div>
-      </section>
-
-      <section class="section hot-section">
-        <h2 class="section-title">Hot Right Now</h2>
-        <div class="hot-grid" id="hotRightNow"></div>
-      </section>
-
-      <section class="section artists-section">
-        <h2 class="section-title">Top Artists</h2>
-        <div class="artists-grid" id="topArtists"></div>
-      </section>
-
-      <section class="section tracks-section">
-        <h2 class="section-title">Top Tracks</h2>
-        <div class="tracks-grid" id="topTracks"></div>
-      </section>
-    </main>
-  </div>
-
-  <script src="/src/lastfm.js"></script>
+  <!-- ОСТАВЬТЕ ТОЛЬКО ЭТОТ DIV - всё остальное будет рендерить React -->
+  <div id="root"></div>
+  
+  <!-- УДАЛИТЕ ВСЕ СКРИПТЫ - они будут собраны Webpack -->
 </body>
 </html>

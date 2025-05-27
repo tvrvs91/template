@@ -1,0 +1,88 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+:root {
+  --primary: #8f1f1f;
+  --secondary: #8f1f1f;
+  --dark: #121212;
+  --light: #1a1a1a;
+  --gray: #333333;
+  --text-dark: #333333;
+  --text-light: #ffffff;
+}
+
+body {
+  background-color: var(--light);
+  color: var(--text-dark);
+  line-height: 1.6;
+}
+
+.app-container {
+  min-height: 100vh;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 0;
+  margin-bottom: 30px;
+  border-bottom: 2px solid var(--primary);
+  background: var(--dark);
+  padding: 20px;
+  border-radius: 0 0 10px 10px;
+}
+
+.header-logo {
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--text-light);
+  letter-spacing: 1px;
+}
+
+.search-form {
+  display: flex;
+  width: 100%;
+  max-width: 500px;
+}
+
+.search-input {
+  flex: 1;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 30px 0 0 30px;
+  font-size: 16px;
+  background: var(--text-light);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.search-input:focus {
+  outline: 2px solid var(--primary);
+}
+
+.search-button {
+  padding: 12px 25px;
+  background-color: var(--primary);
+  color: var(--text-light);
+  border: none;
+  border-radius: 0 30px 30px 0;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s;
+}
+
+.search-button:focus {
+  outline: 2px solid var(--primary);
+}
+
+.search-button:hover {
+  background-color: #b30c00;
+}
+
+.main-content {
+  padding: 20px;
+}
