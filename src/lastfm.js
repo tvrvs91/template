@@ -1,7 +1,6 @@
-const API_KEY = '66b2b5f87d9d396a46ce3769e05d0778';
+const API_KEY = '3539efbccedbf8c6dffc8d1659aa2309';
 const BASE_URL = 'https://ws.audioscrobbler.com/2.0/';
 
-// DOM Elements
 const searchForm = document.getElementById('searchForm');
 const searchInput = document.getElementById('searchInput');
 const genresGrid = document.getElementById('genresGrid');
@@ -10,7 +9,6 @@ const hotRightNow = document.getElementById('hotRightNow');
 const topArtists = document.getElementById('topArtists');
 const topTracks = document.getElementById('topTracks');
 
-// Popular genres with placeholder data
 const popularGenres = [
   { name: 'Rock', tag: 'rock' },
   { name: 'Pop', tag: 'pop' },
@@ -18,13 +16,10 @@ const popularGenres = [
   { name: 'Electronic', tag: 'electronic' },
   { name: 'Jazz', tag: 'jazz' },
   { name: 'Metal', tag: 'metal' },
-  { name: 'R&B', tag: 'r-n-b' },
+  { name: 'Punk', tag: 'punk' },
   { name: 'Indie', tag: 'indie' }
 ];
 
-/**
- * Fetch data from Last.fm API with retry
- */
 async function fetchLastFM(method, params = {}, retries = 3) {
   const url = new URL(BASE_URL);
   url.searchParams.set('method', method);
@@ -51,9 +46,6 @@ async function fetchLastFM(method, params = {}, retries = 3) {
   }
 }
 
-/**
- * Get top album for artist
- */
 async function getTopAlbum(artistName) {
   const data = await fetchLastFM('artist.gettopalbums', { 
     artist: artistName,
@@ -66,9 +58,6 @@ async function getTopAlbum(artistName) {
   return null;
 }
 
-/**
- * Get top artist for genre
- */
 async function getTopArtistForGenre(genre) {
   const data = await fetchLastFM('tag.gettopartists', {
     tag: genre,
@@ -84,9 +73,6 @@ async function getTopArtistForGenre(genre) {
   return null;
 }
 
-/**
- * Display error message
- */
 function showError(message) {
   const errorElement = document.createElement('div');
   errorElement.className = 'error';
@@ -95,13 +81,12 @@ function showError(message) {
   setTimeout(() => errorElement.remove(), 3000);
 }
 
-
-async function createCard(item, type) {
+async function createCard(item, type, isLarge = false) {
   const card = document.createElement('div');
-  card.className = `card ${type}-card`; // Добавляем класс по типу
-  
+  card.className = `card ${type}-card${isLarge ? ' large' : ''}`; // Добавляем класс `large`, если isLarge = true
+
   let imageUrl, title, subtitle, url;
-  
+
   if (type === 'artist') {
     imageUrl = await getTopAlbum(item.name) || 'https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.png';
     title = item.name;
@@ -124,7 +109,7 @@ async function createCard(item, type) {
     subtitle = 'Genre';
     url = `https://www.last.fm/tag/${encodeURIComponent(item.tag)}`;
   }
-  
+
   card.innerHTML = `
     <a href="${url}" target="_blank">
       <img src="${imageUrl}" alt="${title}" class="card-image">
@@ -134,28 +119,29 @@ async function createCard(item, type) {
       </div>
     </a>
   `;
-  
+
   return card;
 }
-/**
- * Load genres with top artists
- */
+
 async function loadGenres() {
-  genresGrid.innerHTML = '<div class="loading">Loading genres...</div>';
-  
+  genresGrid.innerHTML = `
+    <div class="loading">
+      <div class="loading-spinner"></div>
+      <p>Loading genres...</p>
+    </div>
+  `;
+
   const genreCards = await Promise.all(
-    popularGenres.map(genre => createCard(genre, 'genre'))
+    popularGenres.map((genre, index) => createCard(genre, 'genre', index === 0)) 
   );
-  
+
   genresGrid.innerHTML = '';
   genreCards.forEach(card => {
     genresGrid.appendChild(card);
   });
 }
 
-/**
- * Load latest releases (используем тег new-releases)
- */
+
 async function loadLatestReleases() {
   latestReleases.innerHTML = `
     <div class="loading">
@@ -165,14 +151,12 @@ async function loadLatestReleases() {
   `;
   
   try {
-    // Пробуем получить новые релизы через тег
     const data = await fetchLastFM('tag.gettopalbums', { 
       tag: 'new',
       limit: 8
     });
     
     if (!data?.albums?.album || data.albums.album.length === 0) {
-      // Если не получилось, пробуем альтернативный тег
       const alternativeData = await fetchLastFM('tag.gettopalbums', {
         tag: 'alternative',
         limit: 8
@@ -183,7 +167,6 @@ async function loadLatestReleases() {
         return;
       }
       
-      // Используем альтернативные данные
       const albumCards = await Promise.all(
         alternativeData.albums.album.map(album => createCard(album, 'album'))
       );
@@ -195,7 +178,6 @@ async function loadLatestReleases() {
       return;
     }
     
-    // Используем основные данные
     const albumCards = await Promise.all(
       data.albums.album.map(album => createCard(album, 'album'))
     );
@@ -216,11 +198,13 @@ async function loadLatestReleases() {
   }
 }
 
-/**
- * Load hot right now (top tracks)
- */
 async function loadHotRightNow() {
-  hotRightNow.innerHTML = '<div class="loading">Loading hot tracks...</div>';
+  hotRightNow.innerHTML = `
+    <div class="loading">
+      <div class="loading-spinner"></div>
+      <p>Loading hot sheee...</p>
+    </div>
+  `;
   
   const data = await fetchLastFM('chart.gettoptracks', { limit: 8 });
   if (!data?.tracks?.track) return;
@@ -235,11 +219,13 @@ async function loadHotRightNow() {
   });
 }
 
-/**
- * Load top artists
- */
 async function loadTopArtists() {
-  topArtists.innerHTML = '<div class="loading">Loading top artists...</div>';
+  topArtists.innerHTML = `
+    <div class="loading">
+      <div class="loading-spinner"></div>
+      <p>Waiting for a GOATs...</p>
+    </div>
+  `;
   
   const data = await fetchLastFM('chart.gettopartists', { limit: 12 });
   if (!data?.artists?.artist) return;
@@ -254,11 +240,13 @@ async function loadTopArtists() {
   });
 }
 
-/**
- * Load top tracks
- */
 async function loadTopTracks() {
-  topTracks.innerHTML = '<div class="loading">Loading top tracks...</div>';
+  topTracks.innerHTML = `
+    <div class="loading">
+      <div class="loading-spinner"></div>
+      <p>Loading top tracks...</p>
+    </div>
+  `;
   
   const data = await fetchLastFM('chart.gettoptracks', { limit: 12 });
   if (!data?.tracks?.track) return;
@@ -273,9 +261,6 @@ async function loadTopTracks() {
   });
 }
 
-/**
- * Handle search - redirect to Last.fm
- */
 function handleSearch(event) {
   event.preventDefault();
   const query = searchInput.value.trim();
@@ -286,23 +271,19 @@ function handleSearch(event) {
   }
 }
 
-// Initialize with improved loading sequence
 document.addEventListener('DOMContentLoaded', async () => {
   try {
-    // Load visible content first
     await Promise.all([
       loadGenres(),
       loadLatestReleases(),
       loadHotRightNow()
     ]);
-    
-    // Then load secondary content
+
     await Promise.all([
       loadTopArtists(),
       loadTopTracks()
     ]);
     
-    // Setup search
     searchForm.addEventListener('submit', handleSearch);
   } catch (error) {
     console.error('Initialization error:', error);
