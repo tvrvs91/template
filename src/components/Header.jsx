@@ -1,11 +1,14 @@
 import React from 'react';
 
+// Компонент заголовка с логотипом и формой поиска
+// Принимает функцию onSearch для обработки поискового запроса
 function Header({ onSearch }) {
+  // Обработка отправки формы
   const handleSubmit = (e) => {
-    e.preventDefault();
-    const query = e.target.search.value.trim();
-    onSearch(query);
-    e.target.reset();
+    e.preventDefault(); // Предотвращаем перезагрузку страницы
+    const query = e.target.search.value.trim(); // Получаем введённый запрос
+    onSearch(query); // Передаём запрос вверх
+    e.target.reset(); // Очищаем поле ввода
   };
 
   return (
@@ -18,7 +21,7 @@ function Header({ onSearch }) {
           placeholder="Search for artists, albums, or tracks"
           name="search"
           aria-label="Search"
-          required
+          required // Обязательное поле
         />
         <button type="submit" className="search-button">
           Search

@@ -1,10 +1,12 @@
 import React from 'react';
 
+// Компонент индикатора загрузки
+// Принимает сообщение message (по умолчанию "Loading...")
 function LoadingSpinner({ message = 'Loading...' }) {
   return (
     <div className="loading">
-      <div className="loading-spinner"></div>
-      <p>{message}</p>
+      <div className="loading-spinner"></div> {/* Визуальный индикатор */}
+      <p>{message}</p> {/* Текстовое сообщение */}
     </div>
   );
 }

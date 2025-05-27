@@ -14,6 +14,7 @@ import {
   fetchTopTracks
 } from '../services/lastfm';
 
+// Главная страница
 function Home() {
   const [data, setData] = useState({
     genres: [],
@@ -24,6 +25,7 @@ function Home() {
   });
   const [loading, setLoading] = useState(true);
 
+  // Загрузка данных при монтировании
   useEffect(() => {
     const loadData = async () => {
       try {
@@ -43,21 +45,23 @@ function Home() {
           topTracks
         });
       } catch (error) {
-        console.error('Error loading data:', error);
+        console.error('Error loading data:', error); // Ошибка загрузки
       } finally {
-        setLoading(false);
+        setLoading(false); // Снимаем флаг загрузки
       }
     };
 
     loadData();
   }, []);
 
+  // Поиск открывает сайт Last.fm с результатами
   const handleSearch = (query) => {
     if (query) {
       window.open(`https://www.last.fm/search?q=${encodeURIComponent(query)}`, '_blank');
     }
   };
 
+  // Показ спиннера во время загрузки
   if (loading) {
     return (
       <div className="app-container">
@@ -67,6 +71,7 @@ function Home() {
     );
   }
 
+  // Основной рендер после загрузки
   return (
     <div className="app-container">
       <Header onSearch={handleSearch} />

@@ -1,6 +1,7 @@
 const API_KEY = '97b88d20dca0f2b4c6494edde4adc00c';
 const BASE_URL = 'https://ws.audioscrobbler.com/2.0/';
 
+// Жанры для отображения на главной
 const popularGenres = [
   { name: 'Rock', tag: 'rock' },
   { name: 'Pop', tag: 'pop' },
@@ -12,6 +13,7 @@ const popularGenres = [
   { name: 'Indie', tag: 'indie' }
 ];
 
+//вызов API Last.fm
 async function fetchLastFM(method, params = {}, retries = 3) {
   const url = new URL(BASE_URL);
   url.searchParams.set('method', method);
@@ -37,6 +39,8 @@ async function fetchLastFM(method, params = {}, retries = 3) {
   }
 }
 
+
+// Получение изображения топ-альбома артиста (поскольку функция с фото артиста отображает звёздочку, вот такой обход)
 async function getTopAlbum(artistName) {
   try {
     const data = await fetchLastFM('artist.gettopalbums', {
@@ -54,7 +58,7 @@ async function getTopAlbum(artistName) {
   }
 }
 
-
+// Получение топ-артиста по жанру с изображением
 async function getTopArtistForGenre(genre) {
   const data = await fetchLastFM('tag.gettopartists', {
     tag: genre,
@@ -73,6 +77,7 @@ async function getTopArtistForGenre(genre) {
   return null;
 }
 
+// Получение списка жанров с данными по топ-артистам
 export async function fetchGenres() {
   const genrePromises = popularGenres.map(async (genre, index) => {
     const genreData = await getTopArtistForGenre(genre.tag);
@@ -88,6 +93,7 @@ export async function fetchGenres() {
   return Promise.all(genrePromises);
 }
 
+// Получение последних релизов
 export async function fetchLatestReleases() {
   try {
     const data = await fetchLastFM('tag.gettopalbums', { 
@@ -95,6 +101,7 @@ export async function fetchLatestReleases() {
       limit: 8
     });
     
+    // fallback на альтернативный тег, если данных нет
     if (!data?.albums?.album || data.albums.album.length === 0) {
       const alternativeData = await fetchLastFM('tag.gettopalbums', {
         tag: 'alternative',
@@ -128,6 +135,7 @@ export async function fetchLatestReleases() {
   }
 }
 
+// Получение самых популярных треков сейчас
 export async function fetchHotRightNow() {
   const data = await fetchLastFM('chart.gettoptracks', { limit: 16 });
   if (!data?.tracks?.track) return [];
@@ -150,6 +158,7 @@ export async function fetchHotRightNow() {
   return tracksWithImages;
 }
 
+// Получение топ артистов
 export async function fetchTopArtists() {
   const data = await fetchLastFM('chart.gettopartists', { limit: 12 });
   if (!data?.artists?.artist) return [];
@@ -168,6 +177,7 @@ export async function fetchTopArtists() {
   return Promise.all(artistPromises);
 }
 
+// Получение топ треков
 export async function fetchTopTracks() {
   const data = await fetchLastFM('chart.gettoptracks', { limit: 12 });
   if (!data?.tracks?.track) return [];
