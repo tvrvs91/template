@@ -93,6 +93,11 @@
   background-color: transparent;
 }
 
+.card-link {
+  text-decoration: none;
+  color: inherit; 
+}
+
 .card-subtitle {
   color: #919191;
   font-size: 14px;

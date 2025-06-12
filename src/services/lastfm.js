@@ -1,5 +1,6 @@
 const API_KEY = '97b88d20dca0f2b4c6494edde4adc00c';
 const BASE_URL = 'https://ws.audioscrobbler.com/2.0/';
+const DEFAULT_IMAGE = 'https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.png';
 
 // Жанры для отображения на главной
 const popularGenres = [
@@ -37,6 +38,76 @@ async function fetchLastFM(method, params = {}, retries = 3) {
     console.error('Error fetching data:', error);
     throw error;
   }
+}
+
+export async function fetchSearchResults(query) {
+  const [artists, tracks, albums] = await Promise.all([
+    fetchLastFM('artist.search', { artist: query, limit: 6 }),
+    fetchLastFM('track.search', { track: query, limit: 6 }),
+    fetchLastFM('album.search', { album: query, limit: 6 })
+  ]);
+
+  // Функция для получения изображения артиста
+  const getArtistImage = async (artistName) => {
+    try {
+      const data = await fetchLastFM('artist.getInfo', { artist: artistName });
+      return data?.artist?.image?.find(img => img.size === 'extralarge')?.['#text'] || 
+             data?.artist?.image?.find(img => img.size === 'large')?.['#text'] || 
+             DEFAULT_IMAGE;
+    } catch (error) {
+      return DEFAULT_IMAGE;
+    }
+  };
+
+  // Функция для получения изображения трека
+  const getTrackImage = async (artistName, trackName) => {
+    try {
+      const data = await fetchLastFM('track.getInfo', { artist: artistName, track: trackName });
+      return data?.track?.album?.image?.find(img => img.size === 'extralarge')?.['#text'] || 
+             DEFAULT_IMAGE;
+    } catch (error) {
+      return DEFAULT_IMAGE;
+    }
+  };
+
+  // Обработка артистов
+  const processedArtists = await Promise.all(
+    artists?.results?.artistmatches?.artist?.map(async artist => ({
+      title: artist.name,
+      subtitle: 'Artist',
+      imageUrl: await getArtistImage(artist.name),
+      url: `https://www.last.fm/music/${encodeURIComponent(artist.name)}`
+    })) || []
+  );
+
+  // Обработка треков
+  const processedTracks = await Promise.all(
+    tracks?.results?.trackmatches?.track?.map(async track => ({
+      title: track.name,
+      subtitle: track.artist,
+      imageUrl: await getTrackImage(track.artist, track.name),
+      url: `https://www.last.fm/music/${encodeURIComponent(track.artist)}/_/${encodeURIComponent(track.name)}`
+    })) || []
+  );
+
+  // Обработка альбомов
+  const processedAlbums = albums?.results?.albummatches?.album?.map(album => ({
+    title: album.name,
+    subtitle: album.artist,
+    imageUrl: album.image.find(img => img.size === 'extralarge')?.['#text'] || 
+              album.image.find(img => img.size === 'large')?.['#text'] || 
+              DEFAULT_IMAGE,
+    url: `https://www.last.fm/music/${encodeURIComponent(album.artist)}/${encodeURIComponent(album.name)}`
+  })) || [];
+
+  return {
+    artists: processedArtists,
+    tracks: processedTracks,
+    albums: processedAlbums,
+    isEmpty: processedArtists.length === 0 && 
+             processedTracks.length === 0 && 
+             processedAlbums.length === 0
+  };
 }
 
 

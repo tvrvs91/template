@@ -1,14 +1,18 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 // Компонент заголовка с логотипом и формой поиска
 // Принимает функцию onSearch для обработки поискового запроса
-function Header({ onSearch }) {
-  // Обработка отправки формы
+function Header() {
+  const navigate = useNavigate();
+
   const handleSubmit = (e) => {
-    e.preventDefault(); // Предотвращаем перезагрузку страницы
-    const query = e.target.search.value.trim(); // Получаем введённый запрос
-    onSearch(query); // Передаём запрос вверх
-    e.target.reset(); // Очищаем поле ввода
+    e.preventDefault();
+    const query = e.target.search.value.trim();
+    if (query) {
+      navigate(`/search?q=${encodeURIComponent(query)}`);
+    }
+    e.target.reset();
   };
 
   return (
